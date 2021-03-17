@@ -28,6 +28,8 @@ class ViewController: UIViewController {
         secondsRemaining = eggTimes[hardness]!
         secondsTotal = eggTimes[hardness]!
         
+        eggLabel.text = hardness
+        
         timer = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(update), userInfo: nil, repeats: true)
     }
     // 1.0 = count.start
