@@ -10,22 +10,36 @@ import UIKit
 
 class ViewController: UIViewController {
     
-    let eggTimes = ["Soft" : 300, "Medium" : 420, "Hard" : 720]
-    var count = 60
+    let eggTimes: [String:Float] = ["Soft" : 300, "Medium" : 420, "Hard" : 720]
+    var secondsRemaining: Float = 60.0
+    var secondsTotal: Float?
+    var timer = Timer()
     
+
+    @IBOutlet weak var eggLabel: UILabel!
+    @IBOutlet weak var progressBar: UIProgressView!
     @IBAction func hardnessSelected(_ sender: UIButton){
+        
+        timer.invalidate()
+        
         let hardness = sender.currentTitle!
         
-        count = eggTimes[hardness]!
+        secondsRemaining = eggTimes[hardness]!
+        secondsTotal = eggTimes[hardness]!
         
-        Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(update), userInfo: nil, repeats: true)
+        timer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(update), userInfo: nil, repeats: true)
     }
-    
-    @IBOutlet weak var timerHere: UIView!
+    // 1.0 = count.start
+    // 0.0 = count = 0
     @objc func update() {
-        if count > 0{
-            print(count)
-            count-=1
+        if secondsRemaining > 0{
+            progressBar.progress = secondsRemaining / secondsTotal!
+            print(secondsRemaining)
+            secondsRemaining-=1
+        }
+        if secondsRemaining == 0 {
+            timer.invalidate()
+            eggLabel.text = "Done"
         }
     }
 }
